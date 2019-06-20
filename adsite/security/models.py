@@ -16,7 +16,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Designates whether this user should be treated as active. ''Unselect this instead of deleting accounts.'
         ),
     )
-    server_id = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=128)
     entry_date = models.DateField(default=date.today())
     phone = models.CharField(max_length=18)
