@@ -2,8 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
-from datetime import date
-
+from django.utils.timezone import now 
 from .managers import UserManager
 
 
@@ -17,7 +16,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         ),
     )
     name = models.CharField(max_length=128)
-    entry_date = models.DateField(default=date.today())
+    entry_date = models.DateField(default=now)
     phone = models.CharField(max_length=18)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name',]

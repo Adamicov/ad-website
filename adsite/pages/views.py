@@ -2,11 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from core.create_ad_form import AdForm
-import json
-from datetime import datetime
 from django.utils.timezone import now
-import requests
-from security import api_urls as api
 
 
 def home_view(request, *args, **kwargs):

@@ -11,12 +11,8 @@ from django.utils.encoding import force_bytes, force_text
 from django.http import HttpResponse
 from .token_generator import account_activation_token
 from .models import User
-from .serializers import UserSerializer
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
-import requests 
-from . import api_urls
-import json
 
 
 def register_view(request):
@@ -74,11 +70,6 @@ def activate(request, uidb64, token):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
-        user.save()
-        serializer = UserSerializer(user)
-        response = requests.post(api_urls.REGISTER_USER, json=serializer.data)
-        data = json.loads(response.text)
-        user.server_id = data['id']
         user.save()
         login(request, user)
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
