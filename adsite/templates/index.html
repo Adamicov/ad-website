@@ -20,23 +20,22 @@
         {% endfor %}
     </div>
 
-    <ul class="pagination mt-5 ml-5">
-        {% if details.first %}
-        <li class="page-item"><a class="page-link" href="?page={{details.number}}">Previous</a></li>
-        {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{details.number|add:'-1'}}">Previous</a></li>
-        {% endif %}
-        <li class="page-item active">
-            <span class="page-link" href="?page={{details.number}}">
-                {{details.number}}
-                <span class="sr-only">(current)</span>
+    <div class="pagination">
+        <span class="step-links">
+            {% if ads.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ ads.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ ads.number }} of {{ ads.paginator.num_pages }}.
             </span>
-        </li>
-        {% if details.last %}
-        <li class="page-item"><a class="page-link" href="?page={{details.number}}">Next</a></li>
-        {% else %}
-        <li class="page-item"><a class="page-link" href="?page={{details.number|add:'1'}}">Next</a></li>
-        {% endif %}
-    </ul>
+    
+            {% if ads.has_next %}
+                <a href="?page={{ ads.next_page_number }}">next</a>
+                <a href="?page={{ ads.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 </div>
 {% endblock %}

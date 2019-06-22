@@ -15,3 +15,6 @@ class Ad(models.Model):
     entry_date  = models.DateTimeField(default=now)
     bump_date = models.DateTimeField(default=now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
