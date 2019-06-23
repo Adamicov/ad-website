@@ -7,9 +7,8 @@
 {% block body %}
 <div class="container">
     {% for ad in user_ads %}
-        {% load static %}
         <div class="card d-inline-block mr-5 mt-5" style="width: 14rem;">
-            <img class="card-img-top" src="{% static 'pages/download.svg' %}" alt="Card image cap">
+            <img class="card-img-top" src="{{ ad.image.url }}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">{{ad.title}}</h5>
                 <p class="card-text">{{ad.description}}</p>

@@ -21,4 +21,7 @@ urlpatterns = [
     path('account/my_ads', views.get_user_ads, name='user_ads'),
     path('account/create_ad', views.create_ad, name='create_ad'),
     path('account/<int:ad_id>/edit_ad', views.edit_ad, name='edit_ad'),
-]
+] 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

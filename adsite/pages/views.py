@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 
 
 def home_view(request, *args, **kwargs):
-    ads_list = Ad.objects.all()
+    ads_list = list(Ad.objects.all())
     paginator = Paginator(ads_list, 25)
     
     page = request.GET.get('page')
@@ -35,10 +35,15 @@ def get_user_ads(request):
 @login_required
 def create_ad(request):
     if request.method == 'POST':
-        form = AdForm(request.POST)
+        form = AdForm(request.POST, request.FILES)
         if form.is_valid():
             ad = form.clean_ad()
             ad.user = request.user
+            x = form.cleaned_data['image']
+            print(x)
+            if x:
+                ad.image = x
+            print(ad.image.url)
             ad.save()
             return redirect('user_ads')
     else:
@@ -62,7 +67,7 @@ def edit_ad(request, ad_id):
     return render(request, 'edit_ad.html', {'form': form})
 
 def get_ad_data(ad):
-    """Returns a dictionary to bind data to form """
+    """ Returns a dictionary to bind data to form """
     ad_dict = {}
     ad_dict['title'] = ad.title
     ad_dict['description'] = ad.description

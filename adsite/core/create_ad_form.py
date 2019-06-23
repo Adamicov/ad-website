@@ -6,6 +6,7 @@ class AdForm(forms.Form):
     category = forms.ChoiceField(choices=Ad.CATEGORIES)
     description = forms.CharField(widget=forms.Textarea)
     price = forms.FloatField()
+    image = forms.ImageField(required=False)
 
     def clean_ad(self):
         """Get data from the form and return ad"""
@@ -16,3 +17,4 @@ class AdForm(forms.Form):
         ad.category = cleaned_data['category']
         ad.price = cleaned_data['price']
         return ad
+        
