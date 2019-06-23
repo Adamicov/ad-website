@@ -4,11 +4,10 @@ from django.contrib.auth.decorators import login_required
 from core.create_ad_form import AdForm
 from django.utils.timezone import now
 from core.models import Ad
-from django.core.paginator import Paginator
 
 
 def home_view(request, *args, **kwargs):
-    ads_list = list(Ad.objects.all())
+    ads_list = Ad.objects.all()
     paginator = Paginator(ads_list, 25)
     
     page = request.GET.get('page')
@@ -17,11 +16,11 @@ def home_view(request, *args, **kwargs):
 
 
 def ad_detail_view(request, ad_id):
-    user = request.user
-    ad = Ad.objects.get(id=ad_id)
     is_owner = False
-    if ad in user.ad_set.all():
-        is_owner = True
+    ad = Ad.objects.get(id=ad_id)
+    user = request.user
+    if user.is_authenticated:
+        is_owner = is_user_ad_owner(user, ad)
     return render(request, 'ad_detail_view.html', {'ad': ad, 'is_owner': is_owner})
 
 
@@ -35,15 +34,10 @@ def get_user_ads(request):
 @login_required
 def create_ad(request):
     if request.method == 'POST':
-        form = AdForm(request.POST, request.FILES)
+        form = AdForm(request.POST)
         if form.is_valid():
             ad = form.clean_ad()
             ad.user = request.user
-            x = form.cleaned_data['image']
-            print(x)
-            if x:
-                ad.image = x
-            print(ad.image.url)
             ad.save()
             return redirect('user_ads')
     else:
@@ -80,3 +74,7 @@ def edit_ad_values(form, ad):
     ad.description = new_ad.description
     ad.price = new_ad.price
     return ad
+
+def is_user_ad_owner(user, ad):
+    return ad in user.ad_set.all()
+        
